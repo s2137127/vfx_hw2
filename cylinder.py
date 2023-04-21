@@ -1,16 +1,13 @@
 import cv2
 import numpy as np
 class cylinder:
-    def __init__(self,f=705) -> None:
-        self.f = f
+    def __init__(self) -> None:
+        pass
 
-    def project(self,img):
-        
-        img = img[0]
+    def project(self,img,s):
         out_img = np.zeros_like(img,dtype=np.uint8)
         h,w,_ = img.shape
         img = img.flatten()
-        s = self.f
         x_origin = np.floor(w / 2)
         y_origin = np.floor(h / 2)
         x_arange = np.arange(w)
@@ -22,7 +19,6 @@ class cylinder:
         y = np.sqrt(x*x + s*s) / s * y_prime
         x += x_origin
         y += y_origin
-
         idx = np.ones([h, w])
         floor_x = np.floor(x).astype('int32')
         idx[floor_x < 0] = 0; idx[floor_x > w-1] = 0

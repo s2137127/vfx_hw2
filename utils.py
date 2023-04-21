@@ -1,3 +1,4 @@
+from cv2 import sort
 import numpy as np
 import cv2
 from scipy.spatial.distance import cdist
@@ -75,8 +76,8 @@ class f_detection:
         return np.array(kp_list)#,cv2_keypoint
     
     def get_keypoint_sift(self,image,threshold=3.0,sigma=2**(1/4),num_octaves=2 ,num_DoG_images_per_octave=4 ):
-        print(image.shape)
-        image = cv2.cvtColor(image[0],cv2.COLOR_BGR2GRAY)
+        # print(image.shape)
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
         global image_
         num_guassian_images_per_octave = num_DoG_images_per_octave + 1
         gaussian_images = []
@@ -225,7 +226,7 @@ class f_descriptor:
 class f_matching:
     def __init__(self) :
         pass
-    def get_match(self,f1,f2,th_ratio=0.85):
+    def get_match(self,f1,f2,th_ratio=0.6):
         matches = []
         dist = cdist(f1,f2)
         for i in range(dist.shape[0]):
@@ -242,8 +243,7 @@ class f_matching:
 class img_matching:
     def __init__(self) -> None:
         pass
-    def Ransac(self,kp1,kp2,matches,n=2,th=150):
-        print(len(kp1))
+    def Ransac(self,kp1,kp2,matches,n=2,th=1):
         kp1 = np.array(kp1)
         kp2 = np.array(kp2)
         matches = np.array(matches)[:,:2].astype(int)
@@ -329,11 +329,10 @@ class blending:
     def crop(self,img):
         # cv2.imshow('te',img)
         # cv2.waitKey()
-        print(img.shape)
         _, thresh = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 1, 255, cv2.THRESH_BINARY)
         upper, lower = [-1, -1]
 
-        black_pixel_num_threshold = img.shape[1]//5
+        black_pixel_num_threshold = img.shape[1]//100
 
         for y in range(thresh.shape[0]):
             if len(np.where(thresh[y] == 0)[0]) < black_pixel_num_threshold:
@@ -363,7 +362,7 @@ def draw_match_point(img1, keypoints1, img2, keypoints2, matches):
     img_matches[:,:w] = img1
     img_matches[:,w:] = img2
     
-    for i,j,_ in matches[0]:
+    for i,j,_ in matches:
         color=np.random.randint(0,256,size=(1,3)).tolist()
         # print(color)
         cv2.circle(img_matches,keypoints1[i,::-1],radius=3,color=[255,0,0])
@@ -372,8 +371,24 @@ def draw_match_point(img1, keypoints1, img2, keypoints2, matches):
     cv2.imshow('matches',img_matches)
     cv2.waitKey()
 
+def end2end(img_t,shift_t,kp,feature,f_matching,img_match):
+    matches = f_matching.get_match(feature[0],feature[1])
+    s = img_match.Ransac(kp[0],kp[1],matches)
+    shift = np.sum(shift_t,axis=0)
+    y_shift = np.abs(shift[0])+s[0]
+    col_shift = None
 
+    # same sign
+    if shift[0]*shift[1] > 0:
+        col_shift = np.linspace(y_shift, 0, num=img_t.shape[1], dtype=np.uint16)
+    else:
+        col_shift = np.linspace(0, y_shift, num=img_t.shape[1], dtype=np.uint16)
 
+    image = img_t.copy()
+    for x in range(img_t.shape[1]):
+        image[:,x] = np.roll(img_t[:,x], col_shift[x], axis=0)
+    return image
+            
 # if __name__ == "__main__":
     # img1 = cv2.imread('./prtn00.jpg')
     # img2 = cv2.imread('./prtn01.jpg')

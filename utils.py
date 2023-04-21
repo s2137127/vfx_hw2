@@ -368,8 +368,7 @@ def draw_match_point(img1, keypoints1, img2, keypoints2, matches):
         cv2.circle(img_matches,keypoints1[i,::-1],radius=3,color=[255,0,0])
         cv2.circle(img_matches,(keypoints2[j,1]+w,keypoints2[j,0]),radius=3,color=[0,255,0])
         cv2.line(img_matches,keypoints1[i,::-1],(keypoints2[j,1]+w,keypoints2[j,0]),color=color[0],thickness=2)
-    cv2.imshow('matches',img_matches)
-    cv2.waitKey()
+    cv2.imwrite('./matches.png',img_matches)
 
 def end2end(img_t,shift_t,kp,feature,f_matching,img_match):
     matches = f_matching.get_match(feature[0],feature[1])

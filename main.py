@@ -10,7 +10,7 @@ parse.add_argument('--img_dir',default='./parrington',type=str,help='directory f
 parse.add_argument('--use_cylinder',default=True,type=bool)
 parse.add_argument('--feature_detection_method',default='sift',type=str,choices=['sift','harris'])
 parse.add_argument('--feature_descriptor_method',default='sift',type=str,choices=['sift','neighbor'])
-parse.add_argument('--show_matches',default=None,type=int,help='which matches to show')
+parse.add_argument('--save_matches_img',default=2,type=int,help='which matches to show')
 parse.add_argument('--save_output',default=True,type=bool)
 parse.add_argument('--end2end_alignment',default=True,type=bool)
 args = vars(parse.parse_args())
@@ -63,8 +63,8 @@ if __name__ == '__main__':
     # print(len(feature))
     task = [[feature[i],feature[i+1]] for i in range(len(feature)-1)]
     matches = pool.starmap(f_matching.get_match,task)
-    if args['show_matches'] is not None:
-        idx = args['show_matches']
+    if args['save_matches_img'] is not None:
+        idx = args['save_matches_img']
         draw_match_point(img_list[idx][0], keypoint[idx], img_list[idx+1][0], keypoint[idx+1], matches[idx])
     img_match = img_matching()
     # draw_match_point(img_list[0][0], keypoint[0], img_list[1][0], keypoint[1], matches)

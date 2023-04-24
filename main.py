@@ -6,14 +6,14 @@ import cv2
 import os
 from argparse import ArgumentParser
 parse = ArgumentParser('High Dynamic Range Imaging')
-parse.add_argument('--img_dir',default='./parrington',type=str,help='directory for input images')
+parse.add_argument('--img_dir',default='./grail',type=str,help='directory for input images')
 parse.add_argument('--use_cylinder',default=True,type=bool)
 parse.add_argument('--feature_detection_method',default='sift',type=str,choices=['sift','harris'])
 parse.add_argument('--feature_descriptor_method',default='sift',type=str,choices=['sift','neighbor'])
-parse.add_argument('--save_matches_img',default=1,type=int,help='which matches to show')
+parse.add_argument('--save_matches_img',default=None,type=int,help='which matches to show')
 parse.add_argument('--save_output',default=True,type=bool)
 parse.add_argument('--end2end_alignment',default=True,type=bool)
-parse.add_argument('--save_keypoint_img',default=1,type=int,help='which keypoint image to show')
+parse.add_argument('--save_keypoint_img',default=None,type=int,help='which keypoint image to show')
 args = vars(parse.parse_args())
 if __name__ == '__main__':
     pool = mp.Pool(mp.cpu_count())

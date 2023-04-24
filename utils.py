@@ -345,17 +345,8 @@ class blending:
                 break
 
         return img[upper:lower, :]
-def draw_match_point(img1, keypoints1, img2, keypoints2, matches):
-    # print(matches[0])
-    # keypoints1 = keypoints1.astype(float)
-    # keypoints2 = keypoints2.astype(float)
-    # keypoints1 = [cv2.KeyPoint(i,j,1) for i,j in keypoints1]
-    # keypoints2 = [cv2.KeyPoint(i,j,1) for i,j in keypoints2]
-    # matches = [cv2.DMatch(i,j,k) for i,j,k in matches[0]]
-    # img_matches = np.empty((max(img1.shape[0], img2.shape[0]), img1.shape[1]+img2.shape[1], 3), dtype=np.uint8)
-    # cv2.drawMatches(img1, keypoints1, img2, keypoints2, matches, img_matches,None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-    # cv2.imshow('Good Matches', img_matches)
-    # cv2.waitKey()
+def draw_match_point(img1, keypoints1, img2, keypoints2, matches,name):
+  
     assert img1.shape == img2.shape , "resize the image and coordinate"
     w = img1.shape[1]
     img_matches = np.empty((max(img1.shape[0], img2.shape[0]), img1.shape[1]+img2.shape[1], 3), dtype=np.uint8)
@@ -368,7 +359,7 @@ def draw_match_point(img1, keypoints1, img2, keypoints2, matches):
         cv2.circle(img_matches,keypoints1[i,::-1],radius=3,color=[255,0,0])
         cv2.circle(img_matches,(keypoints2[j,1]+w,keypoints2[j,0]),radius=3,color=[0,255,0])
         cv2.line(img_matches,keypoints1[i,::-1],(keypoints2[j,1]+w,keypoints2[j,0]),color=color[0],thickness=2)
-    cv2.imwrite('./matches.png',img_matches)
+    cv2.imwrite('./matches_%s.png' %name,img_matches)
 
 def end2end(img_t,shift_t,kp,feature,f_matching,img_match):
     matches = f_matching.get_match(feature[0],feature[1])

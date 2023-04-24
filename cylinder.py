@@ -55,9 +55,9 @@ class cylinder:
     
 if __name__ == "__main__":
 
-    img = cv2.imread('./image/0.jpg')
+    img = cv2.imread('./parrington/prtn00.jpg')
     # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     cyl = cylinder()
-    test = cyl.project(img)
-    cv2.imshow("test",test)
-    cv2.waitKey()
+    test = cyl.project(img,704.916)
+    cv2.imwrite("cylinder.png",test)
+    # cv2.waitKey()

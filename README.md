@@ -65,21 +65,30 @@ python main.py --help
 #### pictures taken with tripods
 
 ![](readme_pic/panaromas.png)
- 
+
+* 18 images
+* focal length ≈ 705
 ### Office
 
 #### pictures taken with tripods
 
 ![](readme_pic/panaromas3.png)
 
+* 18 images
+* focal length ≈ 628
+
 ### NTU
 #### pictures taken with tripods
 
 ![](readme_pic/panaromas1.png)
 
-### Beautiful Scene
+* 8 images
+* focal length ≈ 600
 
+### Beautiful Scene
 #### pictures taken without tripods
 
 ![](readme_pic/panaromas2.png)
 
+* 15 images
+* focal length ≈ 650
